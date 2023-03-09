@@ -2,6 +2,8 @@ import librosa, librosa.display, librosa.feature
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from scipy.signal import stft
+from scipy.io import wavfile
 
 file = "Dm_RockGB_JO_3.wav"
 DATA_PATH = "Training"
@@ -31,7 +33,7 @@ plt.show()
 # Short Time Fourier Transform -> Spectogram
 n_fft = 2048
 hop_length = 512 # amount each transform is shifted to the right
-stft = librosa.core.stft(signal, hop_length=hop_length, n_fft=n_fft)
+sttfw = librosa.core.stft(signal, hop_length=hop_length, n_fft=n_fft)
 spectogram = np.abs(stft)
 log_spec = librosa.amplitude_to_db(spectogram)
 librosa.display.specshow(log_spec, sr=sr, hop_length=hop_length)
@@ -50,5 +52,34 @@ plt.colorbar()
 plt.show()
 
 
+file = "Dm_RockGB_JO_3.wav"
+y, sr = librosa.load(file)
+
+# Extract chroma features
+chroma = librosa.feature.chroma_stft(y=y, sr=sr)
+
+# Plot chroma features
+plt.figure(figsize=(10, 4))
+librosa.display.specshow(chroma, y_axis='chroma', x_axis='time')
+plt.colorbar()
+plt.title('Chroma Feature')
+plt.tight_layout()
+plt.show()
+
+signal, sr = librosa.load(file)
+
+# Calculate zero-crossing rate
+zcr = librosa.feature.zero_crossing_rate(signal)
+
+# Print the mean ZCR
+print('Mean ZCR:', zcr.mean())
+
+# Load audio file
+fs, audio = wavfile.read(file)
+
+# Set STFT parameters
+window = 'hann' # Window type
+nperseg = 256  # Length of each segment
+noverlap = 128  # Overlap between segments
 
 
