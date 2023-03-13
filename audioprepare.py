@@ -16,6 +16,7 @@ signal, sr = librosa.load(file, sr=22050) # signal is a 1D  numpy array of each 
 librosa.display.waveshow(signal, sr=sr)
 plt.xlabel("Time (s)")
 plt.ylabel("Amplitude")
+plt.title('Waveform of Dm')
 plt.show()
 
 # Move From time domain to frequency domain
@@ -25,15 +26,16 @@ magnitude = np.abs(fft)
 freq = np.linspace(0, sr, len(magnitude))
 left_frequency = freq[:int(len(freq)/2)]
 left_magnitude = magnitude[:int(len(magnitude)/2)]
-plt.plot(left_frequency, left_magnitude)
+plt.plot(left_frequency, left_magnitude, 'r')
 plt.xlabel("Freq (Hz)")
 plt.ylabel("Magnitude")
+plt.title('Note Dm in Frequency Domain')
 plt.show()
 
 # Short Time Fourier Transform -> Spectogram
 n_fft = 2048
 hop_length = 512 # amount each transform is shifted to the right
-sttfw = librosa.core.stft(signal, hop_length=hop_length, n_fft=n_fft)
+stft = librosa.core.stft(signal, hop_length=hop_length, n_fft=n_fft)
 spectogram = np.abs(stft)
 log_spec = librosa.amplitude_to_db(spectogram)
 librosa.display.specshow(log_spec, sr=sr, hop_length=hop_length)
@@ -46,8 +48,8 @@ plt.show()
 MFCCS = librosa.feature.mfcc(y=signal, n_fft=n_fft, hop_length=hop_length, n_mfcc=13)
 librosa.display.specshow(MFCCS, sr=sr, hop_length=hop_length)
 plt.xlabel("Time (s)")
-plt.ylabel("MFCC")
-plt.title("Mel Spectogram")
+plt.ylabel("Mel Scale")
+plt.title("Mel Spectogram For note Dm")
 plt.colorbar()
 plt.show()
 
