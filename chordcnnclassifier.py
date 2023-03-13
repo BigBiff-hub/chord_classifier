@@ -31,19 +31,19 @@ def plot_history(history):
     fig, axs = plt.subplots(2)
 
     # create accuracy sublpot
-    axs[0].plot(history.history["CNN accuracy"], label="train accuracy")
-    axs[0].plot(history.history["CNN val_accuracy"], label="test accuracy")
+    axs[0].plot(history.history["accuracy"], label="train accuracy")
+    axs[0].plot(history.history["val_accuracy"], label="test accuracy")
     axs[0].set_ylabel("Accuracy")
     axs[0].legend(loc="lower right")
-    axs[0].set_title("Accuracy eval")
+    axs[0].set_title("CNN Accuracy eval")
 
     # create error sublpot
-    axs[1].plot(history.history["CNN loss"], label="train error")
-    axs[1].plot(history.history["CNN val_loss"], label="test error")
+    axs[1].plot(history.history["loss"], label="train error")
+    axs[1].plot(history.history["val_loss"], label="test error")
     axs[1].set_ylabel("Error")
     axs[1].set_xlabel("Epoch")
     axs[1].legend(loc="upper right")
-    axs[1].set_title("Error eval")
+    axs[1].set_title("CNN Error eval")
 
     plt.show()
 
@@ -147,7 +147,7 @@ if __name__ == "__main__":
     model.summary()
 
     # train model
-    history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=32, epochs=30)
+    history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=32, epochs=100)
 
     # plot accuracy/error for training and validation
     plot_history(history)
